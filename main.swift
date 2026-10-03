@@ -231,6 +231,7 @@ final class SystemEQTap {
         return err == noErr ? obj : nil
     }
 
+    @available(macOS 14.2, *)
     func start(outputDevice: AudioDeviceID, gains: [Double], preampDB: Double) -> Bool {
         stop()
         guard let outUID = Self.deviceUID(outputDevice) else {
@@ -365,6 +366,7 @@ final class SystemEQTap {
         coeffs = EQCoeffs(gains: gains, preampDB: preampDB, sampleRate: sampleRate)
     }
 
+    @available(macOS 14.2, *)
     private func destroyTapOnly() {
         if tapID != 0 { AudioHardwareDestroyProcessTap(tapID); tapID = 0 }
     }
@@ -376,7 +378,7 @@ final class SystemEQTap {
         }
         procID = nil
         if aggregateID != 0 { AudioHardwareDestroyAggregateDevice(aggregateID); aggregateID = 0 }
-        destroyTapOnly()
+        if #available(macOS 14.2, *) { destroyTapOnly() }
         if outputDeviceID != 0 { slog("EQ: stopped") }
         outputDeviceID = 0
     }
@@ -689,6 +691,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     // Start/stop/rebuild the tap to match current settings. Safe to call often.
     func applyEQ() {
+        guard #available(macOS 14.2, *) else {
+            startKeepAliveIfNeeded()
+            return
+        }
         guard eqEnabled else {
             eqTap.stop()
             startKeepAliveIfNeeded() // EQ off → raw keep-alive guards standby again

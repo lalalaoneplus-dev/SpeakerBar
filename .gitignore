@@ -2,3 +2,5 @@
 *.o
  build/
 SpeakerBar
+dist/
+.build/

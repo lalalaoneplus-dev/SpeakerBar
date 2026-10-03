@@ -2,6 +2,10 @@
 
 A macOS menu bar app that keeps a Bluetooth speaker connected, switches audio output with a global hotkey, and adds a system-wide equalizer.
 
+## Install
+
+Download the latest `.dmg` from [Releases](https://github.com/lalalaoneplus-dev/SpeakerBar/releases/latest), open it, and drag SpeakerBar to Applications.
+
 - **Managed speaker:** pick a paired Bluetooth speaker from the menu; a watchdog reconnects it when it drops and after wake.
 - **Global hotkey:** ⌥⌘B toggles between the speaker and the Mac's built-in speakers.
 - **Keep Speaker Awake:** an inaudible 25 Hz pulse every five minutes prevents the speaker's auto-standby.
@@ -16,3 +20,5 @@ A macOS menu bar app that keeps a Bluetooth speaker connected, switches audio ou
 ```
 
 Builds `SpeakerBar.app` into `~/Applications`. Activity is logged to `~/Library/Logs/SpeakerBar.log`.
+
+Run `./package.sh` to build a universal release DMG in `dist/`.
